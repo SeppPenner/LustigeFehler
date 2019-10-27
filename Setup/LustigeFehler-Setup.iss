@@ -2,11 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "LustigeFehler"
-#define MyAppVersion "1.0.0.1"
+#define MyAppVersion "1.0.1.0"
 #define MyAppPublisher "Hämmer Electronics"
 #define MyAppURL "www.softwareload24.de.tl"
 #define MyAppExeName "LustigeFehler.exe"
-#define MyPath "C:\Users\tim\Desktop\Updaten_Snyk\LustigeFehler"
+#define MyPath "C:\Users\Tim\Documents\Git\C# und VB\LustigeFehler"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -23,10 +23,10 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName={commonpf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-LicenseFile={#MyPath}\LustigeFehler\bin\Debug\License.txt
-InfoBeforeFile={#MyPath}\LustigeFehler\bin\Debug\Readme.txt
+LicenseFile={#MyPath}\LustigeFehler\bin\Release\License.txt
+InfoBeforeFile={#MyPath}\LustigeFehler\bin\Release\Readme.txt
 OutputDir={#MyPath}\Setup
 OutputBaseFilename=LustigeFehler-Setup
 SetupIconFile={#MyPath}\LustigeFehler\Funny.ico
@@ -42,10 +42,10 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "{#MyPath}\LustigeFehler\bin\Debug\LustigeFehler.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#MyPath}\LustigeFehler\bin\Debug\Config.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#MyPath}\LustigeFehler\bin\Debug\License.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#MyPath}\LustigeFehler\bin\Debug\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyPath}\LustigeFehler\bin\Release\LustigeFehler.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyPath}\LustigeFehler\bin\Release\Config.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyPath}\LustigeFehler\bin\Release\License.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyPath}\LustigeFehler\bin\Release\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
