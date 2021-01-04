@@ -42,8 +42,10 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "..\src\LustigeFehler\bin\Release\net5.0-windows\LustigeFehler.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\src\LustigeFehler\bin\Release\net5.0-windows\LustigeFehler.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\LustigeFehler\bin\Release\net5.0-windows\Config.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\LustigeFehler\bin\Release\net5.0-windows\License.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\src\LustigeFehler\bin\Release\net5.0-windows\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
