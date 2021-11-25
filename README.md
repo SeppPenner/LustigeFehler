@@ -2,7 +2,6 @@ LustigeFehler
 =============
 
 LustigeFehler is a software to show funny error messages in Windows.
-The executable is written and tested in .Net 5.0.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/jqoy2y5nfbqp5pwu?svg=true)](https://ci.appveyor.com/project/SeppPenner/lustigefehler)
 [![GitHub issues](https://img.shields.io/github/issues/SeppPenner/LustigeFehler.svg)](https://github.com/SeppPenner/LustigeFehler/issues)
