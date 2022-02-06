@@ -20,13 +20,11 @@ namespace LustigeFehler
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the caption.
         /// </summary>
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string Caption { get; set; }
+        public string Caption { get; set; } = string.Empty;
     }
 }

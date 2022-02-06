@@ -24,12 +24,12 @@ namespace LustigeFehler
         /// <summary>
         /// The random generator.
         /// </summary>
-        private readonly Random random = new Random();
+        private readonly Random random = new();
 
         /// <summary>
         /// The configuration.
         /// </summary>
-        private Config config;
+        private Config config = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Main"/> class.
@@ -66,7 +66,7 @@ namespace LustigeFehler
             try
             {
                 var location = Assembly.GetExecutingAssembly().Location;
-                this.config = Import.LoadConfigFromXmlFile(Path.Combine(Directory.GetParent(location)?.FullName ?? string.Empty, "Config.xml"));
+                this.config = Import.LoadConfigFromXmlFile(Path.Combine(Directory.GetParent(location)?.FullName ?? string.Empty, "Config.xml")) ?? new();
             }
             catch (Exception ex)
             {
@@ -84,7 +84,14 @@ namespace LustigeFehler
                 try
                 {
                     var message = this.GetRandomMessage();
-                    MessageBox.Show(message.Name, message.Caption, this.GetRandomButtons(), this.GetRandomIcon());
+                    var buttons = this.GetRandomButtons();
+                    var icons = this.GetRandomIcon();
+
+                    if (buttons is not null && icons is not null)
+                    {
+                        MessageBox.Show(message.Name, message.Caption, buttons.Value, icons.Value);
+                    }
+                    
                     Thread.Sleep(this.random.Next(2300));
                 }
                 catch
@@ -92,8 +99,6 @@ namespace LustigeFehler
                     // ignored
                 }
             }
-
-            // ReSharper disable once FunctionNeverReturns
         }
 
         /// <summary>
@@ -109,22 +114,34 @@ namespace LustigeFehler
         /// Gets the random buttons.
         /// </summary>
         /// <returns>The <see cref="MessageBoxButtons"/>.</returns>
-        private MessageBoxButtons GetRandomButtons()
+        private MessageBoxButtons? GetRandomButtons()
         {
             var values = Enum.GetValues(typeof(MessageBoxButtons));
-            // ReSharper disable once PossibleNullReferenceException
-            return (MessageBoxButtons)values.GetValue(this.random.Next(values.Length));
+            var val = values.GetValue(this.random.Next(values.Length));
+
+            if (val is null)
+            {
+                return null;
+            }
+
+            return (MessageBoxButtons)val;
         }
 
         /// <summary>
         /// Gets the random icon.
         /// </summary>
         /// <returns>The <see cref="MessageBoxIcon"/>.</returns>
-        private MessageBoxIcon GetRandomIcon()
+        private MessageBoxIcon? GetRandomIcon()
         {
             var values = Enum.GetValues(typeof(MessageBoxIcon));
-            // ReSharper disable once PossibleNullReferenceException
-            return (MessageBoxIcon)values.GetValue(this.random.Next(values.Length));
+            var val = values.GetValue(this.random.Next(values.Length));
+
+            if (val is null)
+            {
+                return null;
+            }
+
+            return (MessageBoxIcon)val;
         }
     }
 }

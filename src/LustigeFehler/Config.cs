@@ -21,8 +21,6 @@ namespace LustigeFehler
         /// <summary>
         /// Gets or sets the messages.
         /// </summary>
-        // ReSharper disable once CollectionNeverUpdated.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public List<Message> Messages { get; set; }
+        public List<Message> Messages { get; set; } = new();
     }
 }
