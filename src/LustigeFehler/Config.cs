@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Config.cs" company="Hämmer Electronics">
 //   Copyright (c) All rights reserved.
 // </copyright>
@@ -7,20 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace LustigeFehler
-{
-    using System;
-    using System.Collections.Generic;
+namespace LustigeFehler;
 
+/// <summary>
+/// The configuration class.
+/// </summary>
+[Serializable]
+public class Config
+{
     /// <summary>
-    /// The configuration class.
+    /// Gets or sets the messages.
     /// </summary>
-    [Serializable]
-    public class Config
-    {
-        /// <summary>
-        /// Gets or sets the messages.
-        /// </summary>
-        public List<Message> Messages { get; set; } = new();
-    }
+    public List<Message> Messages { get; set; } = new();
 }
