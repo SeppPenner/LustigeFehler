@@ -48,6 +48,18 @@ public partial class Main : Form
     private void Configure()
     {
         this.LoadConfig();
+
+        // Without any message the spam loop would only throw and retry, invisibly and at full speed.
+        if (this.config.Messages.Count < 1)
+        {
+            MessageBox.Show(
+                "No messages were found in the configuration file Config.xml.",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            Environment.Exit(1);
+        }
+
         this.SpamUser();
     }
 
@@ -63,7 +75,8 @@ public partial class Main : Form
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message + ex.StackTrace, ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            var text = $"{ex.Message}{Environment.NewLine}{Environment.NewLine}{ex.StackTrace}";
+            MessageBox.Show(text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

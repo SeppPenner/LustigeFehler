@@ -14,7 +14,7 @@ LustigeFehler is a software to show funny error messages in Windows.
 [![PayPal](https://img.shields.io/badge/PayPal-00457C?logo=paypal&logoColor=white)](https://paypal.me/th070795)
 
 ## Screenshot from the executable
-![Screenshot from the executable](https://github.com/SeppPenner/LustigeFehler/blob/master/Screenshot.PNG "Screenshot from the executable")
+![Screenshot from the executable](https://github.com/SeppPenner/LustigeFehler/blob/master/Screenshot.png "Screenshot from the executable")
 
 Change history
 --------------
