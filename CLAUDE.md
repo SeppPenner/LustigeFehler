@@ -31,7 +31,9 @@ Layout inside `src/LustigeFehler`:
 - `GlobalUsings.cs`: all usings of the project.
 
 `Setup` holds `LustigeFehler-Setup.iss` (Inno Setup script), `build-setup-files.bat` (cleans `bin`
-and `obj`, publishes, deletes the `*.pdb`) and the built installer `LustigeFehler-Setup.exe`.
+and `obj`, publishes self contained for `win-x64`, deletes the `*.pdb`) and the built installer
+`LustigeFehler-Setup.exe`. Self contained since version 1.0.8.0, before that the target machine
+needed an installed .NET desktop runtime.
 
 Repository root: `README.md` (the only user documentation), `Changelog.md`, `License.txt` (MIT),
 `Screenshot.png`, `.gitattributes` and `.gitignore`. There is no `Updating.md`, no `HowToUse.md`
@@ -46,7 +48,7 @@ dotnet build src/LustigeFehler.sln -c Release
 There are no tests, there is no test project. A behaviour change is verified by publishing and
 starting the executable, and by looking at the message boxes it produces.
 
-- Single target framework `net9.0-windows`, no multi-targeting. `RuntimeIdentifiers` is `win-x64`.
+- Single target framework `net10.0-windows`, no multi-targeting. `RuntimeIdentifiers` is `win-x64`.
 - All build properties live directly in `src/LustigeFehler/LustigeFehler.csproj`. There is **no**
   `Directory.Build.props` in this repository.
 - `TreatWarningsAsErrors` is enabled, so every warning breaks the build, NuGet warnings (`NU****`)
@@ -97,16 +99,18 @@ Do not silently "clean up" these, they are existing behaviour:
   `XmlSerializer` maps by element name.
 - **`SpamUser` swallows every exception.** The `catch` in the loop is empty on purpose, a broken
   entry must not stop the program. The `Thread.Sleep` sits after the `MessageBox.Show` inside the
-  `try`, so an exception skips it. An empty message list therefore spins the loop at full CPU load
+  `try`, so an exception skips it. `Configure` therefore checks for an empty message list before it
+  enters the loop and ends the process, otherwise that case would spin the loop at full CPU load
   with nothing on screen.
 - **`Config.xml` is UTF-8 without BOM and says so.** The declaration `encoding="utf-8"` matches the
   bytes, the German umlauts are real two byte sequences. Do not "repair" that file, and do not add
   a BOM to it.
-- **The `.iss` and `Readme.txt` are Windows-1252 without BOM.** Both carry German umlauts
-  (`Hämmer Electronics` respectively the German half of the readme) as single `0xE4` bytes. Inno
-  Setup 6 only reads a file as UTF-8 if a BOM is present, otherwise it interprets the system code
-  page, so this works on a Windows-1252 machine and produces `HÃ¤mmer Electronics` elsewhere. Any
-  editor that saves "UTF-8 without BOM" silently breaks it.
+- **The `.iss` and `Readme.txt` are UTF-8 with BOM.** Inno Setup 6 only reads a file as UTF-8 if a
+  BOM is present, otherwise it interprets the system code page. Both carry German umlauts
+  (`Hämmer Electronics` respectively the German half of the readme), so both need that BOM. Up to
+  version 1.0.7.0 they were Windows-1252 without BOM, which happened to work on a machine with that
+  code page and would have produced `HÃ¤mmer Electronics` everywhere else. Keep the BOM when
+  editing either file.
 - **The installer is tracked although `.gitignore` excludes `*.exe`.** `Setup/LustigeFehler-Setup.exe`
   was added with `git add -f` and has to be added that way again for every release. It grows the
   repository by the size of the installer on every release, permanently.
