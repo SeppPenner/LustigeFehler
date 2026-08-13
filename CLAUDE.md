@@ -7,8 +7,8 @@ LustigeFehler is a joke program for Windows. It reads a list of fake error messa
 a random icon and a random pause of up to 2.3 seconds in between. The application has no window of
 its own and no way to quit it from the user interface, the only way to stop it is the task manager.
 The repository is **not** published as a NuGet package: no `GeneratePackageOnBuild`, no push
-script. What is shipped is an Inno Setup installer, and that installer is tracked in this
-repository.
+script. What is shipped is an Inno Setup installer, built locally and attached to the GitHub
+release of the matching tag.
 
 One solution `src/LustigeFehler.sln` with exactly one project:
 
@@ -30,10 +30,10 @@ Layout inside `src/LustigeFehler`:
   same for `License.txt` and `Readme.txt`.
 - `GlobalUsings.cs`: all usings of the project.
 
-`Setup` holds `LustigeFehler-Setup.iss` (Inno Setup script), `build-setup-files.bat` (cleans `bin`
-and `obj`, publishes self contained for `win-x64`, deletes the `*.pdb`) and the built installer
-`LustigeFehler-Setup.exe`. Self contained since version 1.0.8.0, before that the target machine
-needed an installed .NET desktop runtime.
+`Setup` holds `LustigeFehler-Setup.iss` (Inno Setup script) and `build-setup-files.bat` (cleans
+`bin` and `obj`, publishes self contained for `win-x64`, deletes the `*.pdb`). The built installer
+`LustigeFehler-Setup.exe` lands in that folder too, but is not tracked. Self contained since
+version 1.0.8.0, before that the target machine needed an installed .NET desktop runtime.
 
 Repository root: `README.md` (the only user documentation), `Changelog.md`, `License.txt` (MIT),
 `Screenshot.png`, `.gitattributes` and `.gitignore`. There is no `Updating.md`, no `HowToUse.md`
@@ -111,9 +111,13 @@ Do not silently "clean up" these, they are existing behaviour:
   version 1.0.7.0 they were Windows-1252 without BOM, which happened to work on a machine with that
   code page and would have produced `HÃ¤mmer Electronics` everywhere else. Keep the BOM when
   editing either file.
-- **The installer is tracked although `.gitignore` excludes `*.exe`.** `Setup/LustigeFehler-Setup.exe`
-  was added with `git add -f` and has to be added that way again for every release. It grows the
-  repository by the size of the installer on every release, permanently.
+- **The installer is not in the repository, it hangs on the GitHub release.** Up to and including
+  version 1.0.8.0 `Setup/LustigeFehler-Setup.exe` was committed with `git add -f`, against the
+  `*.exe` rule of the `.gitignore`. Every release grew the history by the size of the installer,
+  permanently, and with the switch to a self contained publish that went from 1.8 MB to 35 MB per
+  release. Since then the file is only built locally and uploaded as a release asset. Do not add it
+  back, and do not use `git add -f` on it. The copies of versions 1.0.1 to 1.0.8 are still in the
+  history, removing those would mean rewriting every commit and moving every tag.
 - **Inno Setup warns about `PrivilegesRequired`.** The quick launch icon uses `{userappdata}` and
   is limited to Windows 7 and older via `OnlyBelowVersion: 0,6.1`, so it never applies in practice.
 - **AppVeyor badge without CI in the repository.** `README.md` links an AppVeyor build that is
@@ -136,9 +140,18 @@ Do not silently "clean up" these, they are existing behaviour:
    **before** the installer is built, otherwise GitVersion burns a prerelease version into the
    shipped executable.
 6. Run `Setup/build-setup-files.bat`, then compile `Setup/LustigeFehler-Setup.iss` with `ISCC.exe`.
-7. `git add -f Setup/LustigeFehler-Setup.exe` and commit it, by convention with the message
-   `Updated setup.`.
-8. Push the commits and the tag.
+7. Push the commits and the tag.
+8. Attach `Setup/LustigeFehler-Setup.exe` to the GitHub release of that tag. The installer is
+   **not** committed, see the quirks. There is no `gh` CLI on this machine, so this goes through
+   the REST API with the token that `git push` already uses:
+
+   ```powershell
+   $c = "protocol=https`nhost=github.com`n`n" | git credential fill
+   $tok = ($c | Select-String '^password=').ToString().Split('=', 2)[1]
+   ```
+
+   Then `POST /repos/SeppPenner/LustigeFehler/releases` with `tag_name`, followed by an upload of
+   the file to the `upload_url` of the answer with `Content-Type: application/octet-stream`.
 
 The version in the `Changelog.md` has four parts (`1.0.8.0`), the tag has three (`1.0.8`).
 GitVersion turns the tag into the assembly version, so an untagged commit produces something like
