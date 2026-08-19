@@ -118,8 +118,10 @@ Do not silently "clean up" these, they are existing behaviour:
   release. Since then the file is only built locally and uploaded as a release asset. Do not add it
   back, and do not use `git add -f` on it. The copies of versions 1.0.1 to 1.0.8 are still in the
   history, removing those would mean rewriting every commit and moving every tag.
-- **Inno Setup warns about `PrivilegesRequired`.** The quick launch icon uses `{userappdata}` and
-  is limited to Windows 7 and older via `OnlyBelowVersion: 0,6.1`, so it never applies in practice.
+- **The Inno Setup compile is warning free, keep it that way.** Up to and including 1.0.8 the script
+  had a quick launch icon that wrote into `{userappdata}` while `PrivilegesRequired` defaults to
+  `admin`, which made `ISCC.exe` warn on every compile. The task was limited to Windows 7 and older
+  via `OnlyBelowVersion: 0,6.1` and never applied in practice, so it is gone.
 - **AppVeyor badge without CI in the repository.** `README.md` links an AppVeyor build that is
   configured outside of this repository. There is no pipeline file here.
 - **`src/LustigeFehler.sln.DotSettings`** is tracked and holds nothing but a ReSharper user
